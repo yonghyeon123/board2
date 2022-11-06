@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board2.ReplyMapper">
+    <select id="selectAll" parameterType="int" resultType="hashMap">
+        SELECT r.`id`, r.`content`, r.`boardId`, r.`writerId`, r.`entryDate`, r.`modifyDate`, m.`nickname`
+        FROM `reply` AS r
+        INNER JOIN `member` AS m
+        ON r.`writerId` = m.`id`
+        WHERE r.`boardId` = #{id}
+    </select>
+    <insert id="insert" parameterType="replyDTO">
+        INSERT INTO `reply`(`boardId`, `writerId`, `content`, `entryDate`, `modifyDate`)
+        VALUES(#{boardId}, #{writerId}, #{content}, NOW(), NOW())
+    </insert>
+    <update id="update" parameterType="replyDTO">
+        UPDATE `reply` SET
+        `content` = #{content}
+        WHERE `id` = #{id}
+    </update>
+    <delete id="delete" parameterType="int">
+        DELETE FROM `reply`
+        WHERE `id` = #{id}
+    </delete>
+    <select id="countByBoardId" resultType="hashMap">
+        SELECT `boardId`, COUNT(`id`) AS QNT
+        FROM `reply`
+        GROUP BY `boardId`
+    </select>
+</mapper>

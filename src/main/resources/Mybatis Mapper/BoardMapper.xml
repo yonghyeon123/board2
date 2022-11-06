@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board2.BoardMapper">
+    <select id="selectAll" resultType="hashMap" parameterType="hashMap">
+        SELECT b.`id`, b.`title`, b.`content`, m.`nickname`, b.`entryDate`, b.`modifyDate`
+        FROM `board` AS b
+        INNER JOIN `member` AS m
+        ON b.`writerId` = m.`id`
+        ORDER BY b.`id` DESC
+        LIMIT ${start}, ${size}
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="hashMap">
+        SELECT b.`id`, b.`title`, b.`content`, b.`writerId`, m.`nickname`, b.`entryDate`, b.`modifyDate`
+        FROM `board` AS b
+        INNER JOIN `member` AS m
+        ON b.`writerId` = m.`id`
+        WHERE b.`id` = #{id}
+        ORDER BY b.`id` DESC
+    </select>
+
+    <select id="countAll" resultType="int">
+        SELECT COUNT(`id`) FROM `board`
+    </select>
+
+    <insert id="insert" parameterType="boardDTO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `board`(`title`, `content`, `writerId`, `entryDate`, `modifyDate`)
+        VALUES(#{title}, #{content}, #{writerId}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="boardDTO">
+        UPDATE `board` SET
+        `title` = #{title},
+        `content` = #{content},
+        `modifyDate` = NOW()
+        WHERE `id` = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM `board`
+        WHERE `id` = #{id}
+    </delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+

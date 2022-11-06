@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board2.MemberMapper">
+    <select id="validateUsername" parameterType="memberDTO" resultType="memberDTO">
+        SELECT * FROM `member`
+        WHERE `username` = #{username}
+    </select>
+    <insert id="register" parameterType="memberDTO">
+        INSERT INTO `member`(`username`, `password`, `nickname`)
+        VALUES(#{username}, #{password}, #{nickname})
+    </insert>
+    <select id="auth" parameterType="memberDTO" resultType="memberDTO">
+        SELECT * FROM `member`
+        WHERE `username` = #{username}
+        AND `password` = #{password}
+    </select>
+    <update id="update" parameterType="memberDTO">
+        UPDATE `member` SET
+        `password` = #{password},
+        `nickname` = #{nickname}
+        WHERE `id` = #{id}
+    </update>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
